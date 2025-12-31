@@ -23,7 +23,7 @@ export interface SiteConfig {
 const defaultConfig: SiteConfig = {
   ministryName: "Every Good Work Ministry",
   domain: "everygoodworks.com",
-  email: "info@everygoodworks.com",
+  email: "info@everygoodwork.com",
   address: "Online Ministry (HQ: Aston, PA)",
   facebookUrl: "https://www.facebook.com/profile.php?id=61575731017076",
   youtubeUrl: "https://www.youtube.com/@EveryGoodWorkMinistriesInc",

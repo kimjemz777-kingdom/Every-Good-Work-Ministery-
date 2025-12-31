@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { ChatMessage, Devotional, BibleChapter, BibleVerse } from '../types';
+import { ChatMessage, Devotional, BibleChapter, BibleVerse, LocalResource } from '../types';
 
 const getAiClient = () => {
   const apiKey = process.env.API_KEY;
@@ -190,6 +190,53 @@ export const fetchBibleChapter = async (
   } catch (error) {
     console.error("Failed to fetch bible chapter:", error);
     throw error;
+  }
+};
+
+export const findCommunityResources = async (location: string, category: string): Promise<LocalResource[]> => {
+  try {
+    const ai = getAiClient();
+    const prompt = `Act as a compassionate social worker. Find 4-5 real or likely representative non-profit organizations or government resources for "${category}" located in or serving "${location}". 
+    
+    If you cannot find exact specific local matches, provide national hotlines or major organizations that likely serve that area (like United Way, Salvation Army, Feeding America) with instructions on how to search locally.
+
+    Output PURE JSON format (no markdown code blocks) with this schema:
+    [
+      {
+        "name": "Organization Name",
+        "contact": "Phone number or Address or Website",
+        "description": "Brief description of how they help.",
+        "category": "${category}"
+      }
+    ]`;
+
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json"
+      }
+    });
+
+    const text = response.text;
+    if (!text) return [];
+    return JSON.parse(text) as LocalResource[];
+  } catch (error) {
+    console.error("Failed to find resources:", error);
+    return [
+      {
+        name: "Community Help Hotline (2-1-1)",
+        contact: "Dial 2-1-1",
+        description: "A universal number in the US/Canada for essential community services.",
+        category: category
+      },
+      {
+        name: "The Salvation Army",
+        contact: "salvationarmyusa.org",
+        description: "Provides food, shelter, and emergency assistance nationwide.",
+        category: category
+      }
+    ];
   }
 };
 

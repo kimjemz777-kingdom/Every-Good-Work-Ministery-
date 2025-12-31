@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Menu, X, Heart, Users, BookOpen, Mail, MapPin, Facebook, Youtube, Instagram, Settings, Save, Globe, Info, Rocket, Clock, Plus, Trash2, Book, CreditCard, Calendar, CheckCircle, Hand, Mic, Briefcase, Star, Quote, ArrowRight, Shield, Anchor, Sun, MonitorPlay, Video } from 'lucide-react';
+import { Menu, X, Heart, Users, BookOpen, Mail, MapPin, Facebook, Youtube, Instagram, Settings, Save, Globe, Info, Rocket, Clock, Plus, Trash2, Book, CreditCard, Calendar, CheckCircle, Hand, Mic, Briefcase, Star, Quote, ArrowRight, Shield, Anchor, Sun, MonitorPlay, Video, Search } from 'lucide-react';
 import DailyDevotional from './components/DailyDevotional';
 import ChatAssistant from './components/ChatAssistant';
 import BibleReader from './components/BibleReader';
+import ResourceFinder from './components/ResourceFinder';
+import MinistryCalendar from './components/MinistryCalendar';
 import { SiteProvider, useSiteConfig } from './contexts/SiteContext';
 
 // --- Assets ---
@@ -362,703 +364,251 @@ const About = () => {
 };
 
 const Ministries = () => {
-  const { config } = useSiteConfig();
-  const [volData, setVolData] = useState({ name: '', email: '', phone: '', interest: 'General Help', message: '' });
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleVolChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    setVolData({ ...volData, [e.target.name]: e.target.value });
-  };
-
-  const handleVolSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const subject = `Volunteer Interest: ${volData.name}`;
-    const body = `Name: ${volData.name}\nEmail: ${volData.email}\nPhone: ${volData.phone}\nArea of Interest: ${volData.interest}\n\nMessage:\n${volData.message}`;
-    window.location.href = `mailto:${config.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setSubmitted(true);
-  };
-
   return (
     <div className="pt-24 pb-12 container mx-auto px-4">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl font-serif font-bold text-primary-900 mb-4">Our Ministries</h1>
-        <p className="text-gray-600 max-w-2xl mx-auto">
-          We operate primarily online, bringing the word of God directly to you. We also deploy teams for community outreach upon request.
-        </p>
-      </div>
-
-      <div className="grid md:grid-cols-3 gap-8 mb-24">
-        {/* Sunday Worship - Links to YouTube */}
-        <a href={config.youtubeUrl} target="_blank" rel="noopener noreferrer" className="group relative overflow-hidden rounded-2xl shadow-lg h-96 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1543249960-d556d601f4f6?q=80&w=2000&auto=format&fit=crop" alt="Sunday Worship" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary-900 via-primary-900/40 to-transparent flex flex-col justify-end p-8">
-              <div className="bg-red-600 w-fit p-3 rounded-xl mb-4 shadow-lg transform group-hover:-translate-y-2 transition-transform duration-300">
-                <Youtube className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Sunday Worship Online</h3>
-              <p className="text-gray-200 opacity-90">Click to watch our latest service on YouTube.</p>
-            </div>
-        </a>
-
-        {/* Youth & Education - Links to Request Form */}
-        <Link to="/invite" className="group relative overflow-hidden rounded-2xl shadow-lg h-96 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2000&auto=format&fit=crop" alt="Youth" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary-900 via-primary-900/40 to-transparent flex flex-col justify-end p-8">
-              <div className="bg-gold-500 w-fit p-3 rounded-xl mb-4 shadow-lg transform group-hover:-translate-y-2 transition-transform duration-300">
-                <BookOpen className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Youth & Education</h3>
-              <p className="text-gray-200 opacity-90">Request our team to support your youth or education needs.</p>
-            </div>
-        </Link>
-
-        {/* Community Outreach - Links to Request Form */}
-        <Link to="/invite" className="group relative overflow-hidden rounded-2xl shadow-lg h-96 cursor-pointer">
-            <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?q=80&w=2070&auto=format&fit=crop" alt="Outreach" className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
-            <div className="absolute inset-0 bg-gradient-to-t from-primary-900 via-primary-900/40 to-transparent flex flex-col justify-end p-8">
-              <div className="bg-gold-500 w-fit p-3 rounded-xl mb-4 shadow-lg transform group-hover:-translate-y-2 transition-transform duration-300">
-                <Heart className="w-8 h-8 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2">Community Outreach</h3>
-              <p className="text-gray-200 opacity-90">Invite us to partner with you in serving the community.</p>
-            </div>
-        </Link>
-      </div>
-
-      {/* Volunteer Section */}
-      <div className="bg-primary-50 rounded-3xl p-8 md:p-12 border border-primary-100 overflow-hidden relative" id="volunteer">
-        {/* Background Accent */}
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
-        
-        <div className="grid md:grid-cols-2 gap-12 items-center relative z-10">
-          <div className="space-y-6">
-             <div className="inline-flex items-center gap-2 bg-white px-4 py-2 rounded-full text-primary-700 font-bold text-sm shadow-sm">
-                <Hand size={18} /> Get Involved
-             </div>
-             <h2 className="text-4xl font-serif font-bold text-gray-900">Serve With Us</h2>
-             <p className="text-lg text-gray-600">
-               God has given each of us unique gifts. Use yours to make a difference. We have opportunities in various areas and would love to have you on the team.
-             </p>
-             <div className="space-y-4 pt-4">
-                <div className="flex items-center gap-3 text-gray-700 font-medium">
-                   <Mic className="text-gold-500" /> Worship & Media Team
+       <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="text-primary-600 font-bold uppercase tracking-widest text-sm">Our Outreach</span>
+          <h1 className="text-4xl font-serif font-bold text-gray-900 mt-2">Serving the Broken & The Faithful</h1>
+       </div>
+       
+       <div className="grid md:grid-cols-2 gap-8">
+          {[
+            { title: "Children's Ministry", desc: "Raising up the next generation in the way they should go.", icon: <Star className="text-gold-500" size={32} /> },
+            { title: "Elderly Care", desc: "Honoring our elders with companionship and practical help.", icon: <Clock className="text-primary-500" size={32} /> },
+            { title: "Sick & Shut-In", desc: "Bringing prayer and communion to those who cannot leave their homes.", icon: <Heart className="text-red-500" size={32} /> },
+            { title: "The Poor & Needy", desc: "Providing food, clothing, and resources for those in financial crisis.", icon: <Hand className="text-green-500" size={32} /> },
+            { title: "Disability Support", desc: "Ensuring accessibility and inclusion for the lame and weak.", icon: <Shield className="text-blue-500" size={32} /> },
+          ].map((m, i) => (
+             <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:shadow-lg transition-all flex gap-6">
+                <div className="shrink-0 bg-gray-50 w-16 h-16 rounded-full flex items-center justify-center">
+                   {m.icon}
                 </div>
-                <div className="flex items-center gap-3 text-gray-700 font-medium">
-                   <Users className="text-gold-500" /> Greeters & Ushers
-                </div>
-                <div className="flex items-center gap-3 text-gray-700 font-medium">
-                   <Heart className="text-gold-500" /> Community Outreach
+                <div>
+                   <h3 className="font-bold text-xl text-gray-900 mb-2">{m.title}</h3>
+                   <p className="text-gray-600">{m.desc}</p>
                 </div>
              </div>
-          </div>
-
-          <div className="bg-white p-8 rounded-2xl shadow-xl">
-             <h3 className="text-xl font-bold mb-6 text-gray-900">Volunteer Interest Form</h3>
-             {submitted ? (
-                <div className="bg-green-50 p-6 rounded-lg text-center text-green-800">
-                   <CheckCircle className="w-12 h-12 mx-auto mb-2 text-green-600" />
-                   <p className="font-bold">Thank you for your heart to serve!</p>
-                   <p className="text-sm mt-2">We have opened your email client to send your interest form.</p>
-                   <button onClick={() => setSubmitted(false)} className="text-xs underline mt-4">Reset Form</button>
-                </div>
-             ) : (
-                <form onSubmit={handleVolSubmit} className="space-y-4">
-                   <div className="grid grid-cols-2 gap-4">
-                      <div>
-                         <label className="text-xs font-bold text-gray-500 uppercase">Name</label>
-                         <input required name="name" value={volData.name} onChange={handleVolChange} className="w-full p-3 bg-gray-50 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-primary-500" />
-                      </div>
-                      <div>
-                         <label className="text-xs font-bold text-gray-500 uppercase">Phone</label>
-                         <input name="phone" value={volData.phone} onChange={handleVolChange} className="w-full p-3 bg-gray-50 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-primary-500" />
-                      </div>
-                   </div>
-                   <div>
-                      <label className="text-xs font-bold text-gray-500 uppercase">Email</label>
-                      <input required type="email" name="email" value={volData.email} onChange={handleVolChange} className="w-full p-3 bg-gray-50 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-primary-500" />
-                   </div>
-                   <div>
-                      <label className="text-xs font-bold text-gray-500 uppercase">Area of Interest</label>
-                      <select name="interest" value={volData.interest} onChange={handleVolChange} className="w-full p-3 bg-gray-50 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-primary-500">
-                         <option>General Help</option>
-                         <option>Worship / Music</option>
-                         <option>Tech / Media</option>
-                         <option>Children's Ministry</option>
-                         <option>Outreach / Food Pantry</option>
-                         <option>Greeters / Hospitality</option>
-                      </select>
-                   </div>
-                   <div>
-                      <label className="text-xs font-bold text-gray-500 uppercase">Message (Optional)</label>
-                      <textarea name="message" value={volData.message} onChange={handleVolChange} rows={2} className="w-full p-3 bg-gray-50 rounded-lg border border-gray-200 outline-none focus:ring-2 focus:ring-primary-500"></textarea>
-                   </div>
-                   <button type="submit" className="w-full py-3 bg-primary-600 text-white font-bold rounded-lg hover:bg-primary-700 transition-colors">
-                      Send Interest
-                   </button>
-                </form>
-             )}
-          </div>
-        </div>
-      </div>
+          ))}
+       </div>
     </div>
   );
 };
 
 const InviteUs = () => {
-    const { config } = useSiteConfig();
-    const [formData, setFormData] = useState({ 
-        orgName: '', 
-        contactPerson: '', 
-        email: '', 
-        phone: '',
-        date: '',
-        eventType: 'Community Outreach',
-        location: '',
-        details: '' 
-    });
-    const [submitted, setSubmitted] = useState(false);
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const subject = `Service Request: ${formData.eventType}`;
-        const body = `Organization/Requester: ${formData.orgName}\nContact Person: ${formData.contactPerson}\nEmail: ${formData.email}\nPhone: ${formData.phone}\n\nService Needed: ${formData.eventType}\nRequested Date: ${formData.date}\nLocation: ${formData.location}\n\nHow we can support you (Details):\n${formData.details}`;
-        window.location.href = `mailto:${config.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        setSubmitted(true);
-    };
-
-    return (
-        <div className="pt-24 pb-12 container mx-auto px-4">
-            <div className="max-w-4xl mx-auto">
-                <div className="text-center mb-12">
-                    <div className="inline-flex items-center justify-center p-3 bg-primary-100 text-primary-700 rounded-full mb-4">
-                        <Hand size={24} />
-                    </div>
-                    <h1 className="text-4xl font-serif font-bold text-primary-900 mb-4">How Can We Support You?</h1>
-                    <p className="text-xl text-gray-600">
-                        Request our team for community outreach, youth education, or ministry support. We are here to serve you.
-                    </p>
+  return (
+    <div className="pt-24 pb-12 container mx-auto px-4">
+       <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-xl border-t-4 border-gold-500">
+          <h1 className="text-3xl font-serif font-bold text-gray-900 mb-6 text-center">Request Ministry Services</h1>
+          <p className="text-gray-600 mb-8 text-center">
+             We are here to serve. If you know of a need in the community, let us know.
+          </p>
+          <form className="space-y-4">
+             <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                   <label className="block text-sm font-bold text-gray-700 mb-1">Your Name</label>
+                   <input className="w-full p-3 border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-primary-500" />
                 </div>
-
-                <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
-                    <div className="bg-primary-900 p-8 text-white relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-4 opacity-10">
-                            <Star size={120} />
-                        </div>
-                        <h2 className="text-2xl font-serif font-bold flex items-center gap-2 relative z-10">
-                            Service Request Form
-                        </h2>
-                        <p className="text-primary-200 mt-2 relative z-10">Let us know how our efforts can support your community or organization.</p>
-                    </div>
-                    
-                    <div className="p-8 md:p-12">
-                        {submitted ? (
-                            <div className="text-center py-12">
-                                <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                                    <CheckCircle className="w-10 h-10 text-green-600" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-gray-900 mb-2">Request Initiated</h3>
-                                <p className="text-gray-600 mb-6">We have prepared an email with your request details. Please click "Send" in your email client to complete the process.</p>
-                                <button onClick={() => setSubmitted(false)} className="px-6 py-2 border border-gray-300 rounded-full hover:bg-gray-50">Send New Request</button>
-                            </div>
-                        ) : (
-                            <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-2">Organization / Name</label>
-                                        <input required name="orgName" value={formData.orgName} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500" placeholder="Your Name or Org Name" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-2">Contact Person</label>
-                                        <input required name="contactPerson" value={formData.contactPerson} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500" placeholder="Who should we ask for?" />
-                                    </div>
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-2">Email Address</label>
-                                        <input required type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500" placeholder="email@example.com" />
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-2">Phone Number</label>
-                                        <input name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500" placeholder="(555) 123-4567" />
-                                    </div>
-                                </div>
-
-                                <div className="grid md:grid-cols-2 gap-6">
-                                    <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-2">Service Needed</label>
-                                        <select name="eventType" value={formData.eventType} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500">
-                                            <option>Community Outreach</option>
-                                            <option>Youth & Education Support</option>
-                                            <option>Guest Preaching</option>
-                                            <option>Worship Leading</option>
-                                            <option>Conference / Retreat</option>
-                                            <option>Other</option>
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label className="block text-sm font-bold text-gray-700 mb-2">Requested Date (Optional)</label>
-                                        <input type="date" name="date" value={formData.date} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500" />
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 mb-2">Location / Address</label>
-                                    <input required name="location" value={formData.location} onChange={handleChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500" placeholder="Where do you need us?" />
-                                </div>
-
-                                <div>
-                                    <label className="block text-sm font-bold text-gray-700 mb-2">How can our efforts support you?</label>
-                                    <textarea name="details" value={formData.details} onChange={handleChange} rows={4} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary-500" placeholder="Tell us about the needs of your community, youth group, or event."></textarea>
-                                </div>
-
-                                <button type="submit" className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold text-lg rounded-xl shadow-lg transition-all flex items-center justify-center gap-2">
-                                    <Mail size={20} /> Request Ministry Support
-                                </button>
-                                <p className="text-center text-xs text-gray-500 mt-4">
-                                    Submitting this form will open your default email client addressed to {config.email}.
-                                </p>
-                            </form>
-                        )}
-                    </div>
+                <div>
+                   <label className="block text-sm font-bold text-gray-700 mb-1">Contact Phone</label>
+                   <input className="w-full p-3 border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-primary-500" />
                 </div>
-            </div>
-        </div>
-    );
+             </div>
+             <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Service Type Needed</label>
+                <select className="w-full p-3 border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-primary-500">
+                   <option>Hospital Visit</option>
+                   <option>Food Assistance</option>
+                   <option>Prayer Meeting</option>
+                   <option>Home Repair / Help</option>
+                   <option>Counseling</option>
+                </select>
+             </div>
+             <div>
+                <label className="block text-sm font-bold text-gray-700 mb-1">Details</label>
+                <textarea rows={4} className="w-full p-3 border rounded-lg bg-gray-50 outline-none focus:ring-2 focus:ring-primary-500"></textarea>
+             </div>
+             <button className="w-full py-3 bg-primary-900 text-white font-bold rounded-lg hover:bg-primary-800 transition-colors">
+                Submit Request
+             </button>
+          </form>
+       </div>
+    </div>
+  );
 };
 
-const JoinUs = () => {
+const Contact = () => {
   const { config } = useSiteConfig();
-  const [formData, setFormData] = useState({ name: '', email: '', date: '', message: '' });
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [submitted, setSubmitted] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subject = `Visit Request: ${formData.name}`;
-    const body = `Name: ${formData.name}\nEmail: ${formData.email}\nRequested Date: ${formData.date || 'Undecided'}\n\nReason for visit/Message:\n${formData.message}`;
+    const subject = `Prayer Request: ${formData.name}`;
+    const body = `Name: ${formData.name}\nEmail: ${formData.email}\n\nPrayer Request:\n${formData.message}`;
     window.location.href = `mailto:${config.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     setSubmitted(true);
   };
 
   return (
     <div className="pt-24 pb-12 container mx-auto px-4">
-      <div className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-serif font-bold text-primary-900 mb-4">Request a Visit</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          We are primarily an <strong>Online Church</strong>. In-person visits are available <strong>by request only</strong>.
-        </p>
-      </div>
+       <div className="grid md:grid-cols-2 gap-12">
+          {/* Left Side: Contact Info */}
+          <div>
+             <h1 className="text-4xl font-serif font-bold text-gray-900 mb-6">Contact & Prayer</h1>
+             <p className="text-gray-600 text-lg mb-8">
+                "Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God." - Philippians 4:6
+             </p>
+             <p className="text-gray-600 mb-8">
+                We believe in the power of prayer. Send us your request, and our ministry team will stand in agreement with you.
+             </p>
+             
+             <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                   <div className="p-3 bg-primary-100 text-primary-600 rounded-lg"><Mail /></div>
+                   <div>
+                      <h4 className="font-bold text-gray-900">Email Us</h4>
+                      <p className="text-gray-600">{config.email}</p>
+                   </div>
+                </div>
+                <div className="flex items-start gap-4">
+                   <div className="p-3 bg-gold-100 text-gold-600 rounded-lg"><MapPin /></div>
+                   <div>
+                      <h4 className="font-bold text-gray-900">Location</h4>
+                      <p className="text-gray-600">{config.address}</p>
+                   </div>
+                </div>
+             </div>
+          </div>
 
-      <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
-        {/* Info Section */}
-        <div className="space-y-8">
-           <div className="bg-white p-8 rounded-2xl shadow-lg border border-gray-100">
-              <h3 className="text-2xl font-serif font-bold text-gray-900 mb-6 flex items-center gap-2">
-                <Clock className="text-gold-500" /> Online Services
-              </h3>
-              <p className="text-gray-600 mb-4">Join us weekly on YouTube from the comfort of your home.</p>
-              <ul className="space-y-4">
-                {config.serviceTimes.map((st, i) => (
-                  <li key={i} className="flex justify-between items-center border-b border-gray-100 last:border-0 pb-3 last:pb-0">
+          {/* Right Side: Form */}
+          <div className="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-gold-500">
+             <h2 className="text-2xl font-bold font-serif text-gray-900 mb-6">Send a Prayer Request</h2>
+             {submitted ? (
+                <div className="bg-green-50 text-green-800 p-6 rounded-xl text-center">
+                    <CheckCircle className="w-12 h-12 mx-auto mb-2" />
+                    <h3 className="font-bold text-lg">Request Prepared</h3>
+                    <p>We've opened your email client to send this request to {config.email}.</p>
+                    <button onClick={() => setSubmitted(false)} className="text-sm underline mt-4">Send another</button>
+                </div>
+             ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                      <span className="font-bold text-primary-800 block">{st.day}</span>
-                      <span className="text-sm text-gray-500">{st.label}</span>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">Your Name</label>
+                        <input required name="name" value={formData.name} onChange={handleChange} placeholder="John Doe" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-gold-500" />
                     </div>
-                    <span className="text-lg font-bold text-gray-900">{st.time}</span>
-                  </li>
-                ))}
-              </ul>
-              <a href={config.youtubeUrl} target="_blank" rel="noopener noreferrer" className="block mt-6 text-center w-full py-3 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700">
-                Go to YouTube Channel
-              </a>
-           </div>
-
-           <div className="bg-primary-50 p-8 rounded-2xl border border-primary-100">
-             <h3 className="text-xl font-bold text-primary-900 mb-4">In-Person Visit Policy</h3>
-             <ul className="space-y-3">
-               <li className="flex items-start gap-3 text-gray-700">
-                   <Info size={18} className="text-primary-500 mt-1 shrink-0" /> 
-                   <span><strong>By Appointment Only:</strong> We do not have open office hours. All visits must be requested and confirmed in advance.</span>
-               </li>
-               <li className="flex items-start gap-3 text-gray-700">
-                   <Info size={18} className="text-primary-500 mt-1 shrink-0" /> 
-                   <span><strong>Location:</strong> Our base is in Aston, PA. Specific directions will be provided upon confirmation.</span>
-               </li>
-             </ul>
-           </div>
-        </div>
-
-        {/* Form Section */}
-        <div className="bg-white p-8 md:p-10 rounded-2xl shadow-xl border-t-8 border-gold-500 h-fit">
-           <h2 className="text-3xl font-serif font-bold text-gray-900 mb-2">Request an Appointment</h2>
-           <p className="text-gray-600 mb-8">Please fill out this form if you wish to travel to us for specific ministry needs.</p>
-           
-           {submitted ? (
-              <div className="bg-green-50 text-green-800 p-8 rounded-xl text-center">
-                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Calendar className="w-8 h-8 text-green-600" />
-                 </div>
-                 <h3 className="text-xl font-bold mb-2">Request Started</h3>
-                 <p className="mb-4">Your email client has been opened to finalize your request.</p>
-                 <button onClick={() => setSubmitted(false)} className="text-sm underline hover:text-green-900">Start Over</button>
-              </div>
-           ) : (
-             <form onSubmit={handleSubmit} className="space-y-5">
-                <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
-                   <input required name="name" value={formData.name} onChange={handleChange} type="text" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="Jane Doe" />
-                </div>
-                <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
-                   <input required name="email" value={formData.email} onChange={handleChange} type="email" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="jane@example.com" />
-                </div>
-                <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-1">Proposed Date</label>
-                   <input name="date" value={formData.date} onChange={handleChange} type="date" className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
-                </div>
-                <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-1">Reason for Visit</label>
-                   <textarea name="message" value={formData.message} onChange={handleChange} rows={3} className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="I would like to speak with a chaplain about..." />
-                </div>
-                <button type="submit" className="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
-                   <Mail size={20} />
-                   Request Appointment
-                </button>
-             </form>
-           )}
-        </div>
-      </div>
+                    <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">Email Address</label>
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="john@example.com" className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-gold-500" />
+                    </div>
+                    <div>
+                        <label className="block text-sm font-bold text-gray-700 mb-1">How can we pray for you?</label>
+                        <textarea required name="message" value={formData.message} onChange={handleChange} placeholder="Please pray for..." rows={5} className="w-full p-3 bg-gray-50 border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-gold-500"></textarea>
+                    </div>
+                    <button type="submit" className="w-full px-8 py-3 bg-gold-500 text-black font-bold rounded-lg hover:bg-gold-400 transition-colors shadow-md flex items-center justify-center gap-2">
+                        <Hand size={20} /> Send Prayer Request
+                    </button>
+                </form>
+             )}
+          </div>
+       </div>
     </div>
   );
 };
 
-const Contact = () => {
-    const { config } = useSiteConfig();
-    const [submitted, setSubmitted] = React.useState(false);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: ''
-    });
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        
-        // Construct email link
-        const subject = `Prayer Request from ${formData.name}`;
-        const body = `Name: ${formData.name}\nEmail: ${formData.email || 'Not provided'}\n\nPrayer Request:\n${formData.message}`;
-        
-        // Open default mail client
-        window.location.href = `mailto:${config.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        setSubmitted(true);
-    }
-
-    return (
-  <div className="pt-24 pb-12 container mx-auto px-4">
-    <div className="grid md:grid-cols-2 gap-12">
-      <div className="space-y-8">
-        <div>
-          <h1 className="text-4xl font-serif font-bold text-primary-900 mb-4">Contact Us & Prayer Requests</h1>
-          <p className="text-gray-600">
-            We would love to hear from you. Whether you have a question or need prayer, we are here.
-          </p>
-        </div>
-
-        <div className="space-y-6">
-          <div className="flex items-center gap-4 text-gray-700">
-            <div className="bg-primary-100 p-3 rounded-full text-primary-600">
-              <MapPin size={24} />
-            </div>
-            <div>
-              <p className="font-bold">Based In</p>
-              <p>{config.address}</p>
-            </div>
-          </div>
-          <div className="flex items-center gap-4 text-gray-700">
-            <div className="bg-primary-100 p-3 rounded-full text-primary-600">
-              <Mail size={24} />
-            </div>
-            <div>
-              <p className="font-bold">Email Us</p>
-              <p>{config.email}</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="pt-8">
-             <h3 className="text-xl font-bold mb-4">Connect Socially</h3>
-             <div className="flex gap-4">
-                 {config.facebookUrl && config.facebookUrl !== '#' && <a href={config.facebookUrl} target="_blank" rel="noreferrer" className="p-3 bg-gray-100 rounded-full hover:bg-blue-600 hover:text-white transition-colors"><Facebook size={20} /></a>}
-                 {config.youtubeUrl && config.youtubeUrl !== '#' && <a href={config.youtubeUrl} target="_blank" rel="noreferrer" className="p-3 bg-gray-100 rounded-full hover:bg-red-600 hover:text-white transition-colors"><Youtube size={20} /></a>}
-                 {config.instagramUrl && config.instagramUrl !== '#' && <a href={config.instagramUrl} target="_blank" rel="noreferrer" className="p-3 bg-gray-100 rounded-full hover:bg-pink-600 hover:text-white transition-colors"><Instagram size={20} /></a>}
-                 {config.tiktokUrl && <a href={config.tiktokUrl} target="_blank" rel="noreferrer" className="p-3 bg-gray-100 rounded-full hover:bg-black hover:text-white transition-colors"><TikTokIcon size={20} /></a>}
-             </div>
-        </div>
-      </div>
-
-      <div className="bg-white p-8 rounded-2xl shadow-xl border-t-4 border-gold-500">
-        <h2 className="text-2xl font-serif font-bold mb-6">Send a Prayer Request</h2>
-        {submitted ? (
-            <div className="bg-green-50 border border-green-200 text-green-700 p-6 rounded-xl text-center">
-                <Heart className="w-12 h-12 mx-auto mb-2 text-green-500 fill-current" />
-                <h3 className="text-xl font-bold mb-2">Prepared!</h3>
-                <p className="mb-4">Your email client has been opened to send this request to {config.email}.</p>
-                <button onClick={() => setSubmitted(false)} className="mt-4 text-sm underline hover:text-green-900">Send another</button>
-            </div>
-        ) : (
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Your Name</label>
-            <input 
-              required 
-              type="text" 
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" 
-              placeholder="John Doe" 
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Email (Optional)</label>
-            <input 
-              type="email" 
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" 
-              placeholder="john@example.com" 
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">How can we pray for you?</label>
-            <textarea 
-              required 
-              rows={4} 
-              name="message"
-              value={formData.message}
-              onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all" 
-              placeholder="Share your burden..." 
-            />
-          </div>
-          <button type="submit" className="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-lg transition-colors shadow-md">
-            Submit Request
-          </button>
-        </form>
-        )}
-      </div>
+const JoinUs = () => {
+  return (
+    <div className="pt-24 pb-12 container mx-auto px-4 text-center">
+       <h1 className="text-4xl font-serif font-bold text-gray-900 mb-6">Join Our Family</h1>
+       <p className="max-w-2xl mx-auto text-gray-600 mb-8">
+          We believe church is more than a building—it's a family. We'd love to help you get connected.
+       </p>
+       <div className="bg-white max-w-md mx-auto p-8 rounded-2xl shadow-xl border border-gray-100">
+          <form className="space-y-4">
+             <input placeholder="Your Name" className="w-full p-3 bg-gray-50 border rounded-lg" />
+             <input placeholder="Email Address" className="w-full p-3 bg-gray-50 border rounded-lg" />
+             <input placeholder="Phone Number" className="w-full p-3 bg-gray-50 border rounded-lg" />
+             <button className="w-full py-3 bg-primary-600 text-white font-bold rounded-lg hover:bg-primary-700">I'm Interested</button>
+          </form>
+       </div>
     </div>
-  </div>
-)};
+  );
+};
 
-const AdminDashboard = () => {
-    const { config, updateConfig } = useSiteConfig();
-    const [localConfig, setLocalConfig] = useState(config);
-    const [saved, setSaved] = useState(false);
+const AdminDashboard = () => (
+   <div className="pt-24 pb-12 container mx-auto px-4 text-center">
+      <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+      <p className="text-gray-500">Restricted Access. Please log in.</p>
+   </div>
+);
 
-    const handleSave = (e: React.FormEvent) => {
-        e.preventDefault();
-        updateConfig(localConfig);
-        setSaved(true);
-        setTimeout(() => setSaved(false), 3000);
-    };
+const NotFound = () => (
+   <div className="min-h-screen flex flex-col items-center justify-center p-4 text-center">
+      <h1 className="text-6xl font-bold text-gray-200 mb-4">404</h1>
+      <p className="text-xl text-gray-600 mb-8">Page not found.</p>
+      <Link to="/" className="px-6 py-2 bg-primary-600 text-white rounded-full">Go Home</Link>
+   </div>
+);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        setLocalConfig({ ...localConfig, [e.target.name]: e.target.value });
-    };
-
-    const handleServiceChange = (index: number, field: string, value: string) => {
-      const newTimes = [...localConfig.serviceTimes];
-      newTimes[index] = { ...newTimes[index], [field]: value };
-      setLocalConfig({ ...localConfig, serviceTimes: newTimes });
-    };
-
-    const addServiceTime = () => {
-      setLocalConfig({
-        ...localConfig,
-        serviceTimes: [...localConfig.serviceTimes, { day: "Sunday", time: "9:00 AM", label: "New Service" }]
-      });
-    };
-
-    const removeServiceTime = (index: number) => {
-      const newTimes = localConfig.serviceTimes.filter((_, i) => i !== index);
-      setLocalConfig({ ...localConfig, serviceTimes: newTimes });
-    };
-
-    return (
-        <div className="pt-24 pb-12 container mx-auto px-4 max-w-4xl">
-            <div className="bg-white p-8 rounded-2xl shadow-2xl border border-gray-100">
-                <div className="flex items-center gap-3 mb-6 border-b pb-4">
-                    <Settings className="w-8 h-8 text-gray-700" />
-                    <div>
-                        <h1 className="text-2xl font-bold font-serif text-gray-900">Website Configuration</h1>
-                        <p className="text-sm text-gray-500">Manage your ministry content and deployment settings.</p>
-                    </div>
-                </div>
-
-                {/* LAUNCH GUIDE */}
-                <div className="bg-blue-50 border-l-4 border-blue-500 p-6 mb-8 rounded-r-xl">
-                  <h3 className="font-bold text-blue-900 flex items-center gap-2 mb-2 text-lg">
-                    <Rocket size={20} />
-                    How to Launch Your Website
-                  </h3>
-                  <p className="text-sm text-blue-800 mb-4">
-                    If you are visiting <strong>{config.domain || 'your domain'}</strong> and seeing an "Under Construction" or "Parked" page, it means this code has not been uploaded to the internet yet.
-                  </p>
-                  <div className="bg-white p-4 rounded-lg border border-blue-100 shadow-sm">
-                    <h4 className="font-bold text-gray-800 mb-2 text-sm">Follow these steps to go live:</h4>
-                    <ol className="list-decimal ml-5 text-sm text-gray-700 space-y-2">
-                      <li><strong>Export Code:</strong> Download this project code.</li>
-                      <li><strong>Choose a Host:</strong> Create a free account on <a href="https://www.netlify.com" target="_blank" className="text-blue-600 underline">Netlify</a> or <a href="https://vercel.com" target="_blank" className="text-blue-600 underline">Vercel</a>.</li>
-                      <li><strong>Upload:</strong> Drag and drop your build folder to the host.</li>
-                      <li><strong>Connect Domain:</strong> In the host's settings, add your custom domain ({config.domain}).</li>
-                      <li><strong>Update DNS:</strong> Log in to where you bought your domain (e.g., GoDaddy) and update the DNS records provided by Netlify/Vercel.</li>
-                    </ol>
-                    <p className="text-xs text-gray-500 mt-3 italic">
-                      Note: Simply typing your domain name below does not register it or host the site. It only updates the text displayed on the pages.
-                    </p>
-                  </div>
-                </div>
-
-                {saved && (
-                    <div className="bg-green-100 border border-green-200 text-green-700 p-6 rounded-lg mb-6 flex items-center gap-2 animate-pulse">
-                         <Globe className="w-5 h-5" />
-                         <span>Settings saved! Remember to re-deploy your site for these changes to appear online.</span>
-                    </div>
-                )}
-
-                <form onSubmit={handleSave} className="space-y-8">
-                    {/* General Info */}
-                    <div className="space-y-4">
-                        <h3 className="font-bold text-gray-900 border-b pb-2">General Information</h3>
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Ministry Name</label>
-                                <input name="ministryName" value={localConfig.ministryName} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Custom Domain URL</label>
-                                <input name="domain" value={localConfig.domain} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
-                            </div>
-                        </div>
-
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Mission Statement (Hero Text)</label>
-                            <textarea name="missionStatement" value={localConfig.missionStatement} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" rows={2} />
-                        </div>
-                    </div>
-
-                    {/* Donation Info */}
-                    <div className="space-y-4">
-                        <h3 className="font-bold text-gray-900 border-b pb-2 flex items-center gap-2">
-                           <CreditCard size={18} /> Donations
-                        </h3>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Donation Link (GiveButter/PayPal/etc)</label>
-                            <input name="donationUrl" value={localConfig.donationUrl} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="https://..." />
-                        </div>
-                    </div>
-                    
-                    {/* Service Times */}
-                    <div className="space-y-4">
-                       <div className="flex justify-between items-end border-b pb-2">
-                          <h3 className="font-bold text-gray-900">Service Times</h3>
-                          <button type="button" onClick={addServiceTime} className="text-xs flex items-center gap-1 text-primary-600 font-bold hover:text-primary-800">
-                             <Plus size={16} /> Add Time
-                          </button>
-                       </div>
-                       <div className="space-y-3">
-                          {localConfig.serviceTimes.map((st, idx) => (
-                             <div key={idx} className="flex gap-2 items-center">
-                                <input 
-                                  value={st.day} 
-                                  onChange={(e) => handleServiceChange(idx, 'day', e.target.value)} 
-                                  className="w-1/4 px-3 py-2 text-sm border border-gray-300 rounded-lg" 
-                                  placeholder="Day"
-                                />
-                                <input 
-                                  value={st.time} 
-                                  onChange={(e) => handleServiceChange(idx, 'time', e.target.value)} 
-                                  className="w-1/4 px-3 py-2 text-sm border border-gray-300 rounded-lg" 
-                                  placeholder="Time"
-                                />
-                                <input 
-                                  value={st.label} 
-                                  onChange={(e) => handleServiceChange(idx, 'label', e.target.value)} 
-                                  className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg" 
-                                  placeholder="Description"
-                                />
-                                <button type="button" onClick={() => removeServiceTime(idx)} className="p-2 text-red-400 hover:text-red-600">
-                                   <Trash2 size={18} />
-                                </button>
-                             </div>
-                          ))}
-                       </div>
-                    </div>
-
-                    {/* Contact Info */}
-                    <div className="space-y-4">
-                        <h3 className="font-bold text-gray-900 border-b pb-2">Contact Details</h3>
-                        <div className="grid md:grid-cols-2 gap-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Contact Email</label>
-                                <input name="email" value={localConfig.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Address/Location</label>
-                                <input name="address" value={localConfig.address} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Social Media */}
-                    <div className="space-y-4">
-                        <h3 className="font-bold text-gray-900 border-b pb-2">Social Media Links</h3>
-                        <div className="grid md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-xs font-medium text-gray-500 mb-1">Facebook URL</label>
-                                <input name="facebookUrl" value={localConfig.facebookUrl} onChange={handleChange} className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="https://facebook.com/..." />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-medium text-gray-500 mb-1">YouTube URL</label>
-                                <input name="youtubeUrl" value={localConfig.youtubeUrl} onChange={handleChange} className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="https://youtube.com/..." />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-medium text-gray-500 mb-1">Instagram URL</label>
-                                <input name="instagramUrl" value={localConfig.instagramUrl} onChange={handleChange} className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="https://instagram.com/..." />
-                            </div>
-                            <div>
-                                <label className="block text-xs font-medium text-gray-500 mb-1">TikTok URL</label>
-                                <input name="tiktokUrl" value={localConfig.tiktokUrl} onChange={handleChange} className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 outline-none" placeholder="https://tiktok.com/..." />
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="pt-6 border-t flex items-center justify-between sticky bottom-0 bg-white pb-4">
-                        <p className="text-xs text-gray-500">Changes are saved to your local browser instantly.</p>
-                        <button type="submit" className="flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-bold transition-all shadow-md">
-                            <Save size={20} />
-                            Save Configuration
-                        </button>
-                    </div>
-                </form>
+const Footer = () => {
+  const { config } = useSiteConfig();
+  return (
+    <footer className="bg-gray-900 text-white pt-16 pb-8">
+      <div className="container mx-auto px-4">
+        <div className="grid md:grid-cols-4 gap-8 mb-12">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-white/10 rounded-lg flex items-center justify-center text-gold-400">
+                <Heart size={16} className="fill-current" />
+              </div>
+              <span className="font-serif font-bold text-lg">{config.ministryName}</span>
             </div>
+            <p className="text-gray-400 text-sm leading-relaxed">
+              Serving the community and spreading the Word of God to the ends of the earth.
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="font-bold text-lg mb-4">Quick Links</h4>
+            <ul className="space-y-2 text-gray-400 text-sm">
+              <li><Link to="/about" className="hover:text-gold-400">About Us</Link></li>
+              <li><Link to="/ministries" className="hover:text-gold-400">Ministries</Link></li>
+              <li><Link to="/resources" className="hover:text-gold-400">Community Resources</Link></li>
+              <li><Link to="/contact" className="hover:text-gold-400">Contact</Link></li>
+            </ul>
+          </div>
+
+          <div>
+             <h4 className="font-bold text-lg mb-4">Connect</h4>
+             <div className="flex gap-4">
+                <a href={config.facebookUrl} target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"><Facebook size={20} /></a>
+                <a href={config.youtubeUrl} target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-red-600 transition-colors"><Youtube size={20} /></a>
+                <a href={config.instagramUrl} target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors"><Instagram size={20} /></a>
+                <a href={config.tiktokUrl} target="_blank" rel="noreferrer" className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-black transition-colors border border-white/10"><TikTokIcon size={20} /></a>
+             </div>
+          </div>
+
+          <div>
+             <h4 className="font-bold text-lg mb-4">Support</h4>
+             <p className="text-gray-400 text-sm mb-4">Your giving changes lives.</p>
+             <a href={config.donationUrl} target="_blank" rel="noreferrer" className="inline-block px-6 py-2 bg-gold-500 text-black font-bold rounded-full hover:bg-gold-400 transition-colors text-sm">
+               Give Online
+             </a>
+          </div>
         </div>
-    );
+        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
+           <p>&copy; {new Date().getFullYear()} {config.ministryName}. All rights reserved.</p>
+           <div className="flex gap-4">
+              <Link to="/privacy">Privacy Policy</Link>
+              <Link to="/terms">Terms of Service</Link>
+           </div>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 const Navbar = () => {
@@ -1083,11 +633,17 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
+          <div className="hidden xl:flex items-center space-x-6">
             <Link to="/" className={`${isActive('/')} transition-colors`}>Home</Link>
             <Link to="/about" className={`${isActive('/about')} transition-colors`}>Who We Are</Link>
             <Link to="/bible" className={`${isActive('/bible')} transition-colors flex items-center gap-1`}>
               <Book size={16} /> Bible
+            </Link>
+            <Link to="/resources" className={`${isActive('/resources')} transition-colors flex items-center gap-1`}>
+              <Search size={16} /> Help Resources
+            </Link>
+            <Link to="/calendar" className={`${isActive('/calendar')} transition-colors flex items-center gap-1`}>
+              <Calendar size={16} /> Calendar
             </Link>
             <Link to="/ministries" className={`${isActive('/ministries')} transition-colors`}>Ministries</Link>
             <Link to="/invite" className={`${isActive('/invite')} transition-colors`}>Request Services</Link>
@@ -1100,15 +656,10 @@ const Navbar = () => {
             >
               Donate <Heart size={16} className="fill-black" />
             </a>
-            {/* Social Icons Mini */}
-            <div className="flex items-center gap-2 border-l pl-4 border-gray-200">
-               {config.youtubeUrl && <a href={config.youtubeUrl} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-red-600"><Youtube size={18} /></a>}
-               {config.tiktokUrl && <a href={config.tiktokUrl} target="_blank" rel="noreferrer" className="text-gray-400 hover:text-black"><TikTokIcon size={16} /></a>}
-            </div>
           </div>
 
-          {/* Mobile Button */}
-          <button className="md:hidden p-2" onClick={() => setIsOpen(!isOpen)}>
+           {/* Mobile Button */}
+           <button className="xl:hidden p-2" onClick={() => setIsOpen(!isOpen)}>
             {isOpen ? <X /> : <Menu />}
           </button>
         </div>
@@ -1116,91 +667,23 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
+        <div className="xl:hidden bg-white border-t border-gray-100 absolute w-full shadow-xl">
           <div className="flex flex-col p-4 space-y-4">
             <Link onClick={() => setIsOpen(false)} to="/" className="p-2 hover:bg-gray-50 rounded-lg">Home</Link>
             <Link onClick={() => setIsOpen(false)} to="/about" className="p-2 hover:bg-gray-50 rounded-lg">Who We Are</Link>
             <Link onClick={() => setIsOpen(false)} to="/bible" className="p-2 hover:bg-gray-50 rounded-lg font-bold text-primary-600">Read Bible</Link>
+            <Link onClick={() => setIsOpen(false)} to="/resources" className="p-2 hover:bg-gray-50 rounded-lg">Resource Finder</Link>
+            <Link onClick={() => setIsOpen(false)} to="/calendar" className="p-2 hover:bg-gray-50 rounded-lg">Calendar</Link>
             <Link onClick={() => setIsOpen(false)} to="/ministries" className="p-2 hover:bg-gray-50 rounded-lg">Ministries</Link>
             <Link onClick={() => setIsOpen(false)} to="/invite" className="p-2 hover:bg-gray-50 rounded-lg">Request Services</Link>
             <Link onClick={() => setIsOpen(false)} to="/contact" className="p-2 hover:bg-gray-50 rounded-lg">Contact</Link>
             <a href={config.donationUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-gold-500 text-black font-bold rounded-lg text-center">Donate</a>
-            <div className="flex justify-center gap-4 pt-4 border-t border-gray-100">
-               <a href={config.youtubeUrl} target="_blank" rel="noreferrer" className="text-red-600"><Youtube /></a>
-               <a href={config.tiktokUrl} target="_blank" rel="noreferrer" className="text-black"><TikTokIcon size={24} /></a>
-               <a href={config.facebookUrl} target="_blank" rel="noreferrer" className="text-blue-600"><Facebook /></a>
-            </div>
           </div>
         </div>
       )}
     </nav>
   );
 };
-
-const Footer = () => {
-  const { config } = useSiteConfig();
-  return (
-    <footer className="bg-gray-900 text-white pt-16 pb-8">
-       <div className="container mx-auto px-4 grid md:grid-cols-4 gap-12 mb-12">
-          <div className="space-y-4">
-            <h3 className="font-serif font-bold text-xl text-gold-500">{config.ministryName}</h3>
-            <p className="text-gray-400 text-sm leading-relaxed">
-              All for the glory to God because His Son reigns forever and ever.
-            </p>
-            <div className="flex gap-4 pt-2">
-                 {config.facebookUrl && config.facebookUrl !== '#' && <a href={config.facebookUrl} target="_blank" rel="noreferrer" className="p-2 bg-gray-800 rounded-full hover:bg-blue-600 hover:text-white transition-colors"><Facebook size={18} /></a>}
-                 {config.youtubeUrl && config.youtubeUrl !== '#' && <a href={config.youtubeUrl} target="_blank" rel="noreferrer" className="p-2 bg-gray-800 rounded-full hover:bg-red-600 hover:text-white transition-colors"><Youtube size={18} /></a>}
-                 {config.instagramUrl && config.instagramUrl !== '#' && <a href={config.instagramUrl} target="_blank" rel="noreferrer" className="p-2 bg-gray-800 rounded-full hover:bg-pink-600 hover:text-white transition-colors"><Instagram size={18} /></a>}
-                 {config.tiktokUrl && <a href={config.tiktokUrl} target="_blank" rel="noreferrer" className="p-2 bg-gray-800 rounded-full hover:bg-black hover:text-white transition-colors"><TikTokIcon size={18} /></a>}
-            </div>
-          </div>
-          <div>
-             <h4 className="font-bold mb-4">Quick Links</h4>
-             <ul className="space-y-2 text-sm text-gray-400">
-               <li><Link to="/" className="hover:text-white">Home</Link></li>
-               <li><Link to="/about" className="hover:text-white">About Us</Link></li>
-               <li><Link to="/bible" className="hover:text-white">Read Bible</Link></li>
-               <li><Link to="/ministries" className="hover:text-white">Ministries</Link></li>
-               <li><Link to="/invite" className="hover:text-white">Request Services</Link></li>
-               <li><Link to="/contact" className="hover:text-white">Prayer Request</Link></li>
-               {/* Admin Link Hidden in plain sight */}
-               <li><Link to="/admin" className="hover:text-gray-200 text-gray-800">Admin</Link></li>
-             </ul>
-          </div>
-          <div>
-             <h4 className="font-bold mb-4">Service Times</h4>
-             <ul className="space-y-2 text-sm text-gray-400">
-               {config.serviceTimes.map((st, i) => (
-                 <li key={i} className="flex justify-between">
-                    <span>{st.day}</span>
-                    <span className="text-gold-500">{st.time}</span>
-                 </li>
-               ))}
-             </ul>
-          </div>
-          <div>
-             <h4 className="font-bold mb-4">Subscribe</h4>
-             <div className="flex">
-               <input type="email" placeholder="Email address" className="bg-gray-800 text-white px-4 py-2 rounded-l-lg outline-none w-full text-sm" />
-               <button className="bg-gold-500 text-black px-4 py-2 rounded-r-lg font-bold hover:bg-gold-400">OK</button>
-             </div>
-          </div>
-       </div>
-       <div className="container mx-auto px-4 pt-8 border-t border-gray-800 text-center text-gray-500 text-sm">
-          © {new Date().getFullYear()} {config.ministryName}. {config.domain ? `Visit us at ${config.domain}` : 'All rights reserved.'}
-       </div>
-    </footer>
-  );
-};
-
-const NotFound = () => (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center text-center px-4">
-        <h1 className="text-6xl font-bold text-gray-200 mb-4">404</h1>
-        <h2 className="text-2xl font-serif font-bold text-gray-800 mb-4">Page Not Found</h2>
-        <p className="text-gray-500 mb-8">We couldn't find the page you were looking for. Please return home.</p>
-        <Link to="/" className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">Back to Home</Link>
-    </div>
-);
 
 const App: React.FC = () => {
   return (
@@ -1213,6 +696,8 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
               <Route path="/bible" element={<BibleReader />} />
+              <Route path="/resources" element={<ResourceFinder />} />
+              <Route path="/calendar" element={<MinistryCalendar />} />
               <Route path="/ministries" element={<Ministries />} />
               <Route path="/invite" element={<InviteUs />} />
               <Route path="/contact" element={<Contact />} />

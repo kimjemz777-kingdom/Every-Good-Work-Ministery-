@@ -22,9 +22,26 @@ export interface BibleChapter {
   verses: BibleVerse[];
 }
 
+export interface LocalResource {
+  name: string;
+  contact: string;
+  description: string;
+  category: string;
+}
+
+export interface CalendarEvent {
+  id: string;
+  date: string; // YYYY-MM-DD
+  title: string;
+  type: 'devotional' | 'appointment' | 'service' | 'personal';
+  completed?: boolean;
+}
+
 export enum Page {
   HOME = 'HOME',
   ABOUT = 'ABOUT',
   MINISTRIES = 'MINISTRIES',
-  CONTACT = 'CONTACT'
+  CONTACT = 'CONTACT',
+  RESOURCES = 'RESOURCES',
+  CALENDAR = 'CALENDAR'
 }
