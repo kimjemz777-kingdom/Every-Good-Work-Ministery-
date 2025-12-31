@@ -10,6 +10,18 @@ export interface Devotional {
   content: string;
 }
 
+export interface BibleVerse {
+  verse: number;
+  text: string;
+}
+
+export interface BibleChapter {
+  reference: string;
+  version: string;
+  language: string;
+  verses: BibleVerse[];
+}
+
 export enum Page {
   HOME = 'HOME',
   ABOUT = 'ABOUT',
