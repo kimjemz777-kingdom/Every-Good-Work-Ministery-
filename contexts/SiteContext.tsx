@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
 
 export interface ServiceTime {
   day: string;
@@ -51,14 +51,9 @@ const SiteContext = createContext<SiteContextType>({
 export const useSiteConfig = () => useContext(SiteContext);
 
 export const SiteProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [config, setConfig] = useState<SiteConfig>(() => {
-    const saved = localStorage.getItem('siteConfig');
-    return saved ? JSON.parse(saved) : defaultConfig;
-  });
-
-  useEffect(() => {
-    localStorage.setItem('siteConfig', JSON.stringify(config));
-  }, [config]);
+  // Use defaultConfig directly to ensure updates to the donation link in the code 
+  // are reflected immediately, ignoring any stale localStorage data.
+  const [config, setConfig] = useState<SiteConfig>(defaultConfig);
 
   const updateConfig = (newConfig: Partial<SiteConfig>) => {
     setConfig(prev => ({ ...prev, ...newConfig }));
