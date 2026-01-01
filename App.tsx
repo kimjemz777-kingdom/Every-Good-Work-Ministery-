@@ -6,6 +6,7 @@ import ChatAssistant from './components/ChatAssistant';
 import BibleReader from './components/BibleReader';
 import ResourceFinder from './components/ResourceFinder';
 import MinistryCalendar from './components/MinistryCalendar';
+import Donate from './components/Donate';
 import { SiteProvider, useSiteConfig } from './contexts/SiteContext';
 
 // --- Assets ---
@@ -240,8 +241,8 @@ const Home = () => {
            <p className="text-primary-100 max-w-2xl mx-auto text-lg">
              Join us in our mission to bring glory to God. Whether you need prayer, guidance, or a family to belong to, you are welcome here.
            </p>
-           <Link to="/contact" className="inline-block px-8 py-3 bg-gold-500 hover:bg-gold-400 text-black font-bold rounded-full transition-colors shadow-lg">
-             Contact Us Today
+           <Link to="/donate" className="inline-block px-8 py-3 bg-gold-500 hover:bg-gold-400 text-black font-bold rounded-full transition-colors shadow-lg">
+             Make a Donation
            </Link>
         </div>
       </section>
@@ -349,14 +350,12 @@ const About = () => {
             Your donation helps provide the support that changes trajectories before crisis sets in. It helps a child gain confidence, a family find stability, and a community move toward lasting hope.
           </p>
           <div className="pt-4 relative z-10">
-            <a 
-              href={config.donationUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <Link 
+              to="/donate"
               className="inline-flex items-center gap-2 px-8 py-4 bg-gold-500 text-black font-bold rounded-full hover:bg-gold-400 transition-all shadow-lg hover:shadow-gold-500/20"
             >
               Support Our Mission <Heart size={20} className="fill-black" />
-            </a>
+            </Link>
           </div>
       </div>
     </div>
@@ -594,9 +593,9 @@ const Footer = () => {
           <div>
              <h4 className="font-bold text-lg mb-4">Support</h4>
              <p className="text-gray-400 text-sm mb-4">Your giving changes lives.</p>
-             <a href={config.donationUrl} target="_blank" rel="noreferrer" className="inline-block px-6 py-2 bg-gold-500 text-black font-bold rounded-full hover:bg-gold-400 transition-colors text-sm">
+             <Link to="/donate" className="inline-block px-6 py-2 bg-gold-500 text-black font-bold rounded-full hover:bg-gold-400 transition-colors text-sm">
                Give Online
-             </a>
+             </Link>
           </div>
         </div>
         <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-gray-500">
@@ -648,14 +647,12 @@ const Navbar = () => {
             <Link to="/ministries" className={`${isActive('/ministries')} transition-colors`}>Ministries</Link>
             <Link to="/invite" className={`${isActive('/invite')} transition-colors`}>Request Services</Link>
             <Link to="/contact" className={`${isActive('/contact')} transition-colors`}>Contact</Link>
-            <a 
-              href={config.donationUrl} 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <Link 
+              to="/donate"
               className="px-5 py-2 bg-gold-500 hover:bg-gold-400 text-black font-bold rounded-full transition-all text-sm shadow-md flex items-center gap-2"
             >
               Donate <Heart size={16} className="fill-black" />
-            </a>
+            </Link>
           </div>
 
            {/* Mobile Button */}
@@ -677,7 +674,7 @@ const Navbar = () => {
             <Link onClick={() => setIsOpen(false)} to="/ministries" className="p-2 hover:bg-gray-50 rounded-lg">Ministries</Link>
             <Link onClick={() => setIsOpen(false)} to="/invite" className="p-2 hover:bg-gray-50 rounded-lg">Request Services</Link>
             <Link onClick={() => setIsOpen(false)} to="/contact" className="p-2 hover:bg-gray-50 rounded-lg">Contact</Link>
-            <a href={config.donationUrl} target="_blank" rel="noopener noreferrer" className="p-2 bg-gold-500 text-black font-bold rounded-lg text-center">Donate</a>
+            <Link onClick={() => setIsOpen(false)} to="/donate" className="p-2 bg-gold-500 text-black font-bold rounded-lg text-center">Donate</Link>
           </div>
         </div>
       )}
@@ -702,6 +699,7 @@ const App: React.FC = () => {
               <Route path="/invite" element={<InviteUs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/join" element={<JoinUs />} />
+              <Route path="/donate" element={<Donate />} />
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

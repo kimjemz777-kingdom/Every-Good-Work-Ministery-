@@ -30,7 +30,7 @@ const defaultConfig: SiteConfig = {
   instagramUrl: "#",
   tiktokUrl: "https://www.tiktok.com/@every.good.work?is_from_webapp=1&sender_device=pc",
   missionStatement: "Serving the weak, the poor, and the child of God. Spreading the Word to the community.",
-  donationUrl: "https://givebutter.com/everygoodwork",
+  donationUrl: "https://donate.stripe.com/7sYfZh7Wq4xmfnKcTR0Ba00",
   serviceTimes: [
     { day: "Sunday", time: "10:00 AM", label: "Online Service (YouTube)" },
     { day: "Wednesday", time: "7:00 PM", label: "Online Bible Study" },
